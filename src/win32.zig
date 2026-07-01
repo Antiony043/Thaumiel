@@ -75,8 +75,20 @@ pub fn ensureDir(io: std.Io, path: []const u8) !void {
     };
 }
 
+pub fn getLogsDir(allocator: std.mem.Allocator) ![]const u8 {
+    const dir = try getAppDataDir(allocator);
+    defer allocator.free(dir);
+    return try std.fs.path.join(allocator, &.{ dir, "logs" });
+}
+
 test "getAppDataDir returns Thaumiel subdirectory" {
     const dir = try getAppDataDir(std.testing.allocator);
     defer std.testing.allocator.free(dir);
     try std.testing.expect(std.mem.endsWith(u8, dir, "Thaumiel"));
+}
+
+test "getLogsDir returns logs subdirectory" {
+    const dir = try getLogsDir(std.testing.allocator);
+    defer std.testing.allocator.free(dir);
+    try std.testing.expect(std.mem.endsWith(u8, dir, "logs"));
 }
