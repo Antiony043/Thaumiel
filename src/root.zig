@@ -11,4 +11,5 @@ test "basic add functionality" {
 
 test {
     _ = @import("win32.zig");
+    _ = @import("updater.zig");
 }
